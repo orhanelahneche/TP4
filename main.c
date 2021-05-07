@@ -2,6 +2,6 @@
 
 int main() {
     printf("Hello, World!\n");
-    //ta mère eb y
+    //t max en y
     return 0;
 }
