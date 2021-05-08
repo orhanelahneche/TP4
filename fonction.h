@@ -6,6 +6,7 @@
 #define TP4_FONCTION_H
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 typedef struct ListeVaccins {
     char* marque;
@@ -27,4 +28,8 @@ T_ListeVaccins * creerVaccin(char* marque, int nb_vaccins);
 void ajouterVaccinA(T_ABR** abr, char*date, char*marque, int nb_vaccins) ;
 
 T_ABR* search_geq(T_ABR* a, char *date);
+
+void afficherStockL(T_ListeVaccins* listeVaccins);
+
+T_ABR* search_geq_ajout(T_ABR* a, char *date);
 #endif //TP4_FONCTION_H

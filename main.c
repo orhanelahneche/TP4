@@ -2,7 +2,7 @@
 #include "fonction.h"
 
 int main() {
-    /*test pour fonction de recherche dans l'arbre
+    //test pour fonction de recherche dans l'arbre
 
     printf("Hello, World!\n");
     T_ABR *a= malloc(sizeof(T_ABR));
@@ -28,16 +28,16 @@ int main() {
     d->fils_gauche=NULL;
 
 
-    T_ABR * s = search_geq(a, "2021-06-02");
+    T_ABR * s = search_geq(a, "2021-05-02");
+    T_ABR * s1 = search_geq_ajout(a, "2021-08-02");
 
-    printf("%s", s->date);
+    printf("%s, %s\n", s->date, s1->date);
 
-    */
-
-    /*test fonction ajouterVaccinL()
+    //test fonction ajouterVaccinL()
     T_ListeVaccins* v1 = creerVaccin("louis", 4);
     T_ListeVaccins* v2 = creerVaccin("orhane", 5);
     T_ListeVaccins* v3 = creerVaccin("jade", 6);
+    T_ListeVaccins* v4 = NULL;
 
     v1->suivant=v2;
     v2->suivant=v3;
@@ -50,7 +50,24 @@ int main() {
     for(int i=0; i<3; i++){
         printf("%s : %d\n", parcours->marque, parcours->nombre_de_vaccins);
         parcours=parcours->suivant;
-    }*/
+    }
+
+    //test fonction ajouterVaccinA()
+    dg->listevaccins=v1;
+    ajouterVaccinA(&a,"2021-05-02", "raph", 5);
+
+    T_ListeVaccins* parcours1 =dg->listevaccins;
+
+    printf("\ntest ajoutervaccinA(): \n");
+
+    for(int i=0; i<4; i++){
+        printf("%s : %d\n", parcours1->marque, parcours1->nombre_de_vaccins);
+        parcours1=parcours1->suivant;
+    }
+
+    //test des deux fonctions affiché
+    afficherStockL(v1);
+
 
 
     return 0;
