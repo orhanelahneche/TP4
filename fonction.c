@@ -34,7 +34,7 @@ void ajouterVaccinL(T_ListeVaccins** listeVaccins, char* marque, int nb_vaccins)
             parcours=parcours->suivant;
     }
 
-    if (strcmp(marque, parcours->marque)!=0){//il faut tester ce cas avant ==> cas du dernier élément (parcours->suivant==NULL)
+    if (strcmp(marque, parcours->marque)==0){//il faut tester ce cas avant ==> cas du dernier élément (parcours->suivant==NULL)
         parcours->nombre_de_vaccins+=nb_vaccins;
     }else{
         parcours->suivant=creerVaccin(marque, nb_vaccins);
