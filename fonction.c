@@ -17,6 +17,9 @@ T_ABR * creerABR(char* date){
     T_ABR * a = malloc(sizeof(T_ABR));
     a->date=malloc(sizeof(char)*10);
     strcpy(a->date, date);
+    a->listevaccins=NULL;
+    a->fils_droit=NULL;
+    a->fils_gauche=NULL;
     return a;
 }
 
@@ -47,8 +50,7 @@ T_ABR* search_geq_ajout(T_ABR* a, char *date)
 void ajouterVaccinL(T_ListeVaccins** listeVaccins, char* marque, int nb_vaccins) {
     T_ListeVaccins* parcours = *listeVaccins;
     if (*listeVaccins==NULL){ //gestion du cas où on doit insérer en tête de liste parce que la liste est nulle
-        T_ListeVaccins* V =malloc(sizeof(T_ListeVaccins));
-        V = creerVaccin(marque, nb_vaccins);
+        T_ListeVaccins* V =creerVaccin(marque, nb_vaccins);
         *listeVaccins = V;
         return;
     }
@@ -69,11 +71,12 @@ void ajouterVaccinL(T_ListeVaccins** listeVaccins, char* marque, int nb_vaccins)
 void ajouterVaccinA(T_ABR** abr, char*date, char*marque, int nb_vaccins){
     T_ABR * a = search_geq(*abr, date); //on cherche dans l'arbre le noeud correspondant à l'arbre
     if (a!=NULL) ajouterVaccinL(&(a->listevaccins), marque, nb_vaccins); //on y ajoute le vaccin
-    else{
+    else{//si on ne trouve pas de noeud existant on va créer un noeud et créer le stock correspondant dedans
         a = search_geq_ajout(*abr, date);
         T_ABR * new = creerABR(date);
         if (strcmp(a->date,date)>0) a->fils_gauche=new;
         else a->fils_droit=new;
+        ajouterVaccinL(&(new->listevaccins), marque, nb_vaccins);
     }
 };
 
@@ -86,4 +89,13 @@ void afficherStockL(T_ListeVaccins* listeVaccins){
         parcours=parcours->suivant;
     }
 };
+
+void afficherStockA(T_ABR* abr){
+    if (abr->fils_gauche!=NULL) afficherStockA(abr->fils_gauche);
+    printf("stock pour la date : %s\n", abr->date);
+    afficherStockL(abr->listevaccins);
+    printf("\n");
+    if (abr->fils_droit!=NULL) afficherStockA(abr->fils_droit);
+};
+
 

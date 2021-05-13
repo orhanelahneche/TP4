@@ -26,6 +26,13 @@ int main() {
     g->fils_gauche=NULL;
     d->fils_droit=NULL;
     d->fils_gauche=NULL;
+    dg->fils_droit=NULL;
+    dg->fils_gauche=NULL;
+
+    a->listevaccins=NULL;
+    g->listevaccins=NULL;
+    d->listevaccins=NULL;
+    dg->listevaccins=NULL;
 
 
     T_ABR * s = search_geq(a, "2021-05-02");
@@ -55,10 +62,16 @@ int main() {
     //test fonction ajouterVaccinA()
     dg->listevaccins=v1;
     ajouterVaccinA(&a,"2021-05-02", "raph", 5);
+    ajouterVaccinA(&a,"2021-08-02", "emma", 5);
 
+
+    //T_ListeVaccins* parcours1 =d->fils_droit->listevaccins;
     T_ListeVaccins* parcours1 =dg->listevaccins;
 
+
     printf("\ntest ajoutervaccinA(): \n");
+
+    //printf("%s\n", parcours1->marque);
 
     for(int i=0; i<4; i++){
         printf("%s : %d\n", parcours1->marque, parcours1->nombre_de_vaccins);
@@ -67,6 +80,8 @@ int main() {
 
     //test des deux fonctions affiché
     afficherStockL(v1);
+
+    afficherStockA(a);
 
 
 

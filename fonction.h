@@ -32,4 +32,7 @@ T_ABR* search_geq(T_ABR* a, char *date);
 void afficherStockL(T_ListeVaccins* listeVaccins);
 
 T_ABR* search_geq_ajout(T_ABR* a, char *date);
+
+void afficherStockA(T_ABR* abr);
+
 #endif //TP4_FONCTION_H
