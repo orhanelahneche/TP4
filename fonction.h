@@ -35,4 +35,6 @@ T_ABR* search_geq_ajout(T_ABR* a, char *date);
 
 void afficherStockA(T_ABR* abr);
 
+int compterVaccins(T_ABR* abr, char*marque);
+
 #endif //TP4_FONCTION_H

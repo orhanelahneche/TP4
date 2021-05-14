@@ -63,6 +63,8 @@ int main() {
     dg->listevaccins=v1;
     ajouterVaccinA(&a,"2021-05-02", "raph", 5);
     ajouterVaccinA(&a,"2021-08-02", "emma", 5);
+    ajouterVaccinA(&a,"2021-06-02", "raph", 3);
+    ajouterVaccinA(&a,"2021-10-02", "raph", 9);
 
 
     //T_ListeVaccins* parcours1 =d->fils_droit->listevaccins;
@@ -83,6 +85,8 @@ int main() {
 
     afficherStockA(a);
 
+    //test comptervaccins
+    printf("il y a %d vaccins raph\n", compterVaccins(a, "raph"));
 
 
     return 0;

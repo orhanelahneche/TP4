@@ -98,4 +98,28 @@ void afficherStockA(T_ABR* abr){
     if (abr->fils_droit!=NULL) afficherStockA(abr->fils_droit);
 };
 
+int compterVaccins(T_ABR* abr, char*marque){
+    if (abr!=NULL) {
+        int nb = 0;
+        if (abr->listevaccins != NULL) {
+            T_ListeVaccins *parcours = abr->listevaccins;
+            while (parcours != NULL) {
+                if (strcmp(parcours->marque, marque) == 0) {
+                    nb += parcours->nombre_de_vaccins;
+                    break;
+                }
+                parcours = parcours->suivant;
+            }
+        }
+        if (abr->fils_gauche == NULL && abr->fils_droit == NULL) return nb;
+        if (abr->fils_gauche == NULL) {
+            return (nb + compterVaccins(abr->fils_droit, marque));
+        } else if (abr->fils_droit == NULL) {
+            return (nb + compterVaccins(abr->fils_gauche, marque));
+        } else return (nb + compterVaccins(abr->fils_gauche, marque) + compterVaccins(abr->fils_droit, marque));
+    }
+    return 0;
+};
+
+
 
