@@ -25,6 +25,8 @@ void ajouterVaccinL(T_ListeVaccins** listeVaccins, char*marque, int nb_vaccins) 
 
 T_ListeVaccins * creerVaccin(char* marque, int nb_vaccins);
 
+T_ABR * creerABR(char* date);
+
 void ajouterVaccinA(T_ABR** abr, char*date, char*marque, int nb_vaccins) ;
 
 T_ABR* search_geq(T_ABR* a, char *date);
