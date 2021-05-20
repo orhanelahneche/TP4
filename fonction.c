@@ -155,7 +155,7 @@ int noeud_minimal_marque(T_ABR * rac, T_ABR ** min, char* marque){
         }
     }
     if(i!=1){
-        if (rac->fils_droit!=NULL) i=noeud_minimal_marque(rac->fils_gauche, min, marque);
+        if (rac->fils_droit!=NULL) i=noeud_minimal_marque(rac->fils_droit, min, marque);
     }
     return i;
 }

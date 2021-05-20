@@ -208,7 +208,7 @@ int main() {
 
     int j=0;
 
-    j=noeud_minimal_marque(arbre, &min, "pfizer");
+    j=noeud_minimal_marque(arbre, &min, "astrazeneca");
 
     if (marqueEstDedans(arbre->fils_droit, "astrazeneca")) printf("salut\n");
     else printf("nope\n");
