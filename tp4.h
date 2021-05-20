@@ -85,6 +85,8 @@ void deduireVaccinL(T_ListeVaccins** listeVaccins, char*marque, int nb_vaccins);
 // question 7 - v
 T_ListeVaccins* rechercherVaccinDansUneListe(T_ListeVaccins* liste, char* marque);
 int compterVaccinsNoeud(T_ABR* noeud, char* marque);
+T_ABR* predecesseurDunNoeudAvecFilsGauche(T_ABR* abr);
+T_ABR* supprimerVaccin(T_ABR* abr, char* date);
 void deduireVaccinA(T_ABR** abr, char*marque, int nb_vaccins);
 
 /* + il faut créer le main !! */
