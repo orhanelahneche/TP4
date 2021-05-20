@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 typedef struct ListeVaccins {
     char* marque;
@@ -38,5 +39,9 @@ T_ABR* search_geq_ajout(T_ABR* a, char *date);
 void afficherStockA(T_ABR* abr);
 
 int compterVaccins(T_ABR* abr, char*marque);
+
+bool marqueEstDedans(T_ABR *abr, char* marque);
+
+int noeud_minimal_marque(T_ABR * rac, T_ABR ** min, char* marque);
 
 #endif //TP4_FONCTION_H

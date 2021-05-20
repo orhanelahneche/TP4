@@ -129,5 +129,34 @@ int compterVaccins(T_ABR* abr, char*marque){
     return 0;
 };
 
+bool marqueEstDedans(T_ABR *abr, char* marque)
+{
+    T_ListeVaccins* parcours = abr->listevaccins;
+
+    while (parcours!=NULL && strcmp(parcours->marque, marque)!=0)
+    {
+        parcours = parcours->suivant;
+    }
+    if (parcours == NULL)
+        return false;
+    else
+        return true;
+} // ok
+
+int noeud_minimal_marque(T_ABR * rac, T_ABR ** min, char* marque){
+    int i=0;
+    if (rac->fils_gauche !=NULL) i=noeud_minimal_marque(rac->fils_gauche, min, marque);
+    if (i!=1) {
+        if (marqueEstDedans(rac, marque)) {
+            i = 1;
+            *min=rac;
+        }
+    }
+    if(i!=1){
+        if (rac->fils_droit!=NULL) i=noeud_minimal_marque(rac->fils_gauche, min, marque);
+    }
+    return i;
+}
+
 
 

@@ -86,7 +86,7 @@ int main() {
     afficherStockA(a);
 
     //test comptervaccins
-    printf("il y a %d vaccins raph\n", compterVaccins(a, "raph"));*/
+    printf("il y a %d vaccins raph\n", compterVaccins(a, "raph"));
 
     int choix=0;
     T_ABR * a=NULL;
@@ -171,7 +171,48 @@ int main() {
                 //insérer la fonction ici
                 break;
         }
-    }
+    }*/
+
+    // question 7 : déduireVaccinA
+
+    // racine : 35 vaccins moderna
+    T_ABR* arbre = creerABR("2021-05-19");
+    ajouterVaccinA(&arbre, "2021-05-19", "moderna", 10);
+    ajouterVaccinA(&arbre, "2021-05-19", "moderna", 20);
+    ajouterVaccinA(&arbre, "2021-05-19", "moderna", 5);
+
+    // fils gauche : 50 vaccins moderna
+    ajouterVaccinA(&arbre,"2021-01-03","moderna",50);
+    /*ajouterVaccinA(&arbre,"2021-01-03","pfizer",20);
+    ajouterVaccinA(&arbre,"2021-01-03","pfizer",30);
+    ajouterVaccinA(&arbre,"2021-01-03","astrazeneca",200);*/
+
+    // fils droit : 10 vaccins moderna
+    ajouterVaccinA(&arbre,"2021-11-18", "moderna",10);
+    ajouterVaccinA(&arbre,"2021-11-18", "pfizer",50);
+    ajouterVaccinA(&arbre,"2021-11-18", "astrazeneca",5);
+
+    // bonus
+    ajouterVaccinA(&arbre,"2021-07-30", "pfizer", 20);
+    ajouterVaccinA(&arbre,"2021-07-30", "pfizer", 20);
+
+    ajouterVaccinA(&arbre, "2022-05-20", "moderna", 30);
+
+    afficherStockA(arbre);
+
+    printf("\n\t*** modif ***\n\n");
+
+    T_ABR ** min=malloc(sizeof(T_ABR*));
+
+    min=NULL;
+
+    int j=0;
+
+    j=noeud_minimal_marque(arbre, min, "astrazeneca");
+
+    T_ABR * min1=*min;
+
+    printf("%d, %s", j,min1->date);
 
 
     return 0;
