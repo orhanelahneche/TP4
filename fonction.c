@@ -148,8 +148,10 @@ int noeud_minimal_marque(T_ABR * rac, T_ABR ** min, char* marque){
     if (rac->fils_gauche !=NULL) i=noeud_minimal_marque(rac->fils_gauche, min, marque);
     if (i!=1) {
         if (marqueEstDedans(rac, marque)) {
+            printf("on a trouvex gros\n");
             i = 1;
             *min=rac;
+            printf("%s\n", (*min)->date);
         }
     }
     if(i!=1){

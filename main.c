@@ -202,17 +202,20 @@ int main() {
 
     printf("\n\t*** modif ***\n\n");
 
-    T_ABR ** min=malloc(sizeof(T_ABR*));
+    T_ABR * min=malloc(sizeof(T_ABR*));
 
     min=NULL;
 
     int j=0;
 
-    j=noeud_minimal_marque(arbre, min, "astrazeneca");
+    j=noeud_minimal_marque(arbre, &min, "pfizer");
 
-    T_ABR * min1=*min;
+    if (marqueEstDedans(arbre->fils_droit, "astrazeneca")) printf("salut\n");
+    else printf("nope\n");
 
-    printf("%d, %s", j,min1->date);
+    if (min==NULL) printf("min est null\n");
+
+    printf("%d, %s", j, min->date);
 
 
     return 0;
