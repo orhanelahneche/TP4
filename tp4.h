@@ -26,7 +26,7 @@ typedef struct ABR {
 }T_ABR;
 
 
-typedef struct Pile Pile;
+typedef struct Pile Pile; // pile de noeud
 struct Pile
 {
     int sommet ; // Indice de l ’ element au sommet de la pile
@@ -52,7 +52,7 @@ T_ABR* search_geq_ajout(T_ABR* a, char *date);
 Pile* creerPile();
 bool pilePleine(Pile* pile);
 bool pileVide(Pile* pile);
-void empiler(Pile* pile, T_ABR* noeud);
+int empiler(Pile* pile, T_ABR* noeud);
 T_ABR* depiler(Pile* pile);
 
 // compter le nombre de noeuds d'un arbre
@@ -87,9 +87,12 @@ T_ListeVaccins* rechercherVaccinDansUneListe(T_ListeVaccins* liste, char* marque
 int compterVaccinsNoeud(T_ABR* noeud, char* marque);
 T_ABR* predecesseurDunNoeudAvecFilsGauche(T_ABR* abr);
 T_ABR* supprimerVaccin(T_ABR* abr, char* date);
-void deduireVaccinA(T_ABR** abr, char*marque, int nb_vaccins);
+int deduireVaccinArec(T_ABR** abr, char*marque, int nb_vaccins); // renvoie le nb de vaccins à déduire décrémenté à chaque appel
+void deduireVaccinA(T_ABR** abr, char*marque, int nb_vaccins); // utilise deduireVaccinArec
+void deduireVaccinAite(T_ABR** abr, char*marque, int nb_vaccins);
+void deduireVaccinAPile(T_ABR** abr, char* marque, int nb_vaccins);
 
-/* + il faut créer le main !! */
+
 
 
 #endif // TP4_H_INCLUDED

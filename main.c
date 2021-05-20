@@ -49,6 +49,7 @@ int main() {
     printf("%d noeuds\n", compterNoeuds(d));*/
 
     // question 7 : déduireVaccinA
+
     // racine : 35 vaccins moderna
     T_ABR* arbre = creerABR("2021-05-19");
     ajouterVaccinA(&arbre, "2021-05-19", "moderna", 10);
@@ -57,16 +58,16 @@ int main() {
 
     // fils gauche : 50 vaccins moderna
     ajouterVaccinA(&arbre,"2021-01-03","moderna",50);
-    ajouterVaccinA(&arbre,"2021-01-03","pfizer",20);
+    /*ajouterVaccinA(&arbre,"2021-01-03","pfizer",20);
     ajouterVaccinA(&arbre,"2021-01-03","pfizer",30);
-    ajouterVaccinA(&arbre,"2021-01-03","astrazeneca",200);
+    ajouterVaccinA(&arbre,"2021-01-03","astrazeneca",200);*/
 
     // fils droit : 10 vaccins moderna
     ajouterVaccinA(&arbre,"2021-11-18", "moderna",10);
     ajouterVaccinA(&arbre,"2021-11-18", "pfizer",50);
     ajouterVaccinA(&arbre,"2021-11-18", "astrazeneca",5);
 
-
+    // bonus
     ajouterVaccinA(&arbre,"2021-07-30", "pfizer", 20);
     ajouterVaccinA(&arbre,"2021-07-30", "pfizer", 20);
 
@@ -76,50 +77,9 @@ int main() {
 
     printf("\n\t*** modif ***\n\n");
 
-    /* deduireVaccinA(&arbre,"moderna", 3); OK
-    deduireVaccinA(&arbre, "moderna", 15); // not ok
-    printf("\n");
-    afficherStockA(arbre);*/
-
-    // compterVaccinsNoeud OK
-    // printf("%d", compterVaccinsNoeud(arbre, "moderna"));
-
-
-    /* prédecesseur d'un noeud avec fils gauche
-    T_ABR* pred = predecesseurDunNoeudAvecFilsGauche(arbre->fils_gauche);
-    printf("ma date = \n\t2021-05-19\nla date de mon pere = \n\t%s\n", pred->date);*/
-
-    /* on supprime les vaccins de la racine pour tester
-    deduireVaccinL(&(arbre->listevaccins), "moderna", 35);
+    T_ABR* nouvelArbre =
+    //deduireVaccinAPile(&arbre, "moderna", 50);
     afficherStockA(arbre);
-
-    printf("\t*** suite des modifs ***\n\n");*/
-
-    // supprimer vaccin
-    /* cas 1 : fils gauche null mais fils droit existe -> retourne fils droit
-    T_ABR* nouvelArbre = supprimerNoeud(arbre, "2021-05-19");
-    afficherStockA(nouvelArbre); // ok */
-
-    /* cas 2 : fils droit null mais fils gauche existe -> retourne fils gauche
-    T_ABR* nouvelArbre = supprimerNoeud(arbre, "2021-05-19");
-    afficherStockA(nouvelArbre); // ok */
-
-    /* cas 3 : fils gauche et fils droit null
-    T_ABR* nouvelArbre = supprimerNoeud(arbre, "2021-05-19");
-    afficherStockA(nouvelArbre); // ok */
-
-    /* cas 4 : fils gauche et fils droit existent
-    T_ABR* nouvelArbre = supprimerNoeud(arbre, "2021-05-19");
-    afficherStockA(nouvelArbre); // ok */
-
-    /*printf("%d\n", compterVaccinsNoeud(arbre, "moderna"));
-    deduireVaccinL(&(arbre->listevaccins), "moderna", 1);
-    printf("%d\n", compterVaccinsNoeud(arbre, "moderna"));*/
-
-    deduireVaccinA(&arbre, "moderna", 35);
-
-    if(arbre!=NULL) afficherStockA(arbre);
-    else printf("mtn l'arbre est nul\n");
 
 
 

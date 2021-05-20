@@ -67,73 +67,6 @@ T_ABR* search_geq_ajout(T_ABR* a, char *date)
     }
 }
 
-// Fonctions utiles à la manipulation de la pile question 7
-
-Pile* creerPile(int max)
-{
-    Pile* nvPile = malloc(sizeof(Pile));
-    if (nvPile!=NULL)
-    {
-        nvPile->sommet = 0;
-        nvPile->MAX = max;
-        nvPile->TableauDeNoeuds = malloc(max*sizeof(T_ABR*)); // max sera égal nombre de noeuds dans l'abr / la place est déjà réservée pour les structures de noeuds
-    }
-    return nvPile;
-}
-
-bool pilePleine(Pile* pile)
-{
-    if (pile == NULL)
-        exit(EXIT_FAILURE);
-    return pile->sommet == pile->MAX;
-}
-
-bool pileVide(Pile* pile)
-{
-    if (pile == NULL)
-        exit(EXIT_FAILURE);
-    return pile->sommet == 0;
-}
-
-void empiler(Pile* pile, T_ABR* noeud)
-{
-    if (pile == NULL)
-    {
-        printf("La pile n'existe pas.\n");
-        return 0;
-    }
-    if (pilePleine(pile))
-    {
-        printf("Debordement par exces.");
-        return 0;
-    }
-    pile->TableauDeNoeuds[pile->sommet] = noeud;
-    pile->sommet ++;
-    return 1;
-}
-
-T_ABR* depiler(Pile* pile)
-{
-    if (pile == NULL)
-    {
-        printf("La pile n'existe pas.\n");
-        exit(EXIT_FAILURE);
-    }
-    if (pileVide(pile))
-    {
-        printf("Debordement par defaut.\n");
-        exit(EXIT_FAILURE);
-    }
-    pile->sommet --;
-    return pile->TableauDeNoeuds[pile->sommet];
-}
-
-int compterNoeuds(T_ABR* abr)
-{
-    if (abr == NULL) return 0;
-    else return 1 + compterNoeuds(abr->fils_gauche) + compterNoeuds(abr->fils_droit);
-}
-
 /*** Fonctions ***/
 
 // question 1
@@ -316,27 +249,86 @@ void deduireVaccinL(T_ListeVaccins** listeVaccins, char* marque, int nb_vaccins)
 }
 
 // question 7
-// version récursive
 
-/*** Fonctions intermédiaires ***/
+// version itérative AVEC PILE
 
-// Retourner la quantité de vaccins d'une certaine marque dans un noeud (à une date) donné(e)
-int compterVaccinsNoeud(T_ABR* noeud, char* marque)
+/*** Fonctions préliminaires ***/
+
+// Manipulation de la pile de noeuds
+
+Pile* creerPile(int max)
 {
-    int nombre = 0;
-    if (noeud->listevaccins != NULL)
+    Pile* nvPile = malloc(sizeof(Pile));
+    if (nvPile!=NULL)
     {
-        T_ListeVaccins *parcours = noeud->listevaccins; // NB: peut être créer une sous-fonction responsable de la recherche dans une liste de vacc
-        while (parcours != NULL) {
-            if (strcmp(parcours->marque, marque) == 0) {
-                nombre += parcours->nombre_de_vaccins;
-                break;
-            }
-            parcours = parcours->suivant;
-        }
+        nvPile->sommet = 0;
+        nvPile->MAX = max;
+        nvPile->TableauDeNoeuds = malloc(max*sizeof(T_ABR*)); // max sera égal nombre de noeuds dans l'abr / la place est déjà réservée pour les structures de noeuds
     }
-    return nombre;
-} // fonctionne bien
+    return nvPile;
+}
+
+bool pilePleine(Pile* pile)
+{
+    if (pile == NULL)
+        exit(EXIT_FAILURE);
+    return pile->sommet == pile->MAX;
+}
+
+bool pileVide(Pile* pile)
+{
+    if (pile == NULL)
+        exit(EXIT_FAILURE);
+    return pile->sommet == 0;
+}
+
+int empiler(Pile* pile, T_ABR* noeud)
+{
+    if (pile == NULL)
+    {
+        printf("La pile n'existe pas.\n");
+        return 0;
+    }
+    if (pilePleine(pile))
+    {
+        printf("Debordement par exces.");
+        return 0;
+    }
+    pile->TableauDeNoeuds[pile->sommet] = noeud;
+    pile->sommet ++;
+    return 1; // retour 1 si l'empilement a bien été effectué
+}
+
+T_ABR* depiler(Pile* pile)
+{
+    if (pile == NULL)
+    {
+        printf("La pile n'existe pas.\n");
+        return NULL;
+    }
+    if (pileVide(pile))
+    {
+        printf("Debordement par defaut.\n");
+        return NULL;
+    }
+    pile->sommet --;
+    return pile->TableauDeNoeuds[pile->sommet];
+}
+
+int compterNoeuds(T_ABR* abr)
+{
+    if (abr == NULL) return 0;
+    else return 1 + compterNoeuds(abr->fils_gauche) + compterNoeuds(abr->fils_droit);
+}
+
+// Rechercher dans une liste
+T_ListeVaccins* rechercherVaccinDansUneListe(T_ListeVaccins* liste, char* marque)
+{
+    while (liste != NULL && strcmp(liste->marque, marque)!=0)
+        liste = liste->suivant;
+    return liste;
+}
+
 
 // Retourner le prédecesseur d'un noeud qui a un sous-arbre gauche (c'est-à-dire que le prédecesseur est forcément situé dans ce sous-arbre gauche)
 T_ABR* predecesseurDunNoeudAvecFilsGauche(T_ABR* abr)
@@ -355,7 +347,7 @@ T_ABR* predecesseurDunNoeudAvecFilsGauche(T_ABR* abr)
         exit(EXIT_FAILURE);
     }
     return pred;
-} // fonctionne bien mais attention fonction limitée (par flemme pour l'instant)
+} // fonctionne bien mais attention usage limité (par flemme pour l'instant)
 
 // Supprimer un noeud dans un arbre, recherche par sa date. Retourne le noeud qui prend sa place.
 T_ABR* supprimerNoeud(T_ABR* abr, char* date)
@@ -365,11 +357,11 @@ T_ABR* supprimerNoeud(T_ABR* abr, char* date)
         printf("noeud nul\n");
         return NULL;
     }
-    /*if (abr->listevaccins != NULL) // à priori ça ne devrait pas arriver // enfait il ne faut pas car on supprime le succ après avoir passé ses clefs au noeud qui doit être supprimé
-    {
-        printf("attention a ce que tu fais, ma liste de vaccins n'est pas nulle\n");
-        exit(EXIT_FAILURE);
-    }*/
+//    if (abr->listevaccins != NULL) // à priori ça ne devrait pas arriver // enfait il ne faut pas car on supprime le succ après avoir passé ses clefs au noeud qui doit être supprimé
+//    {
+//        printf("attention a ce que tu fais, ma liste de vaccins n'est pas nulle\n");
+//        exit(EXIT_FAILURE);
+//    }
     else if (strcmp(abr->date, date) < 0)
         abr->fils_gauche = supprimerNoeud(abr->fils_gauche, date);
     else if (strcmp(abr->date, date) > 0)
@@ -405,9 +397,141 @@ T_ABR* supprimerNoeud(T_ABR* abr, char* date)
     return abr;
 } // fuites mémoire corrigées // fonctionne
 
+// Retourner la quantité de vaccins d'une certaine marque dans un noeud (à une date) donné(e)
+int compterVaccinsNoeud(T_ABR* noeud, char* marque)
+{
+    int nombre = 0;
+    if (noeud->listevaccins != NULL)
+    {
+        T_ListeVaccins *parcours = noeud->listevaccins; // NB: peut être créer une sous-fonction responsable de la recherche dans une liste de vacc
+        while (parcours != NULL) {
+            if (strcmp(parcours->marque, marque) == 0) {
+                nombre += parcours->nombre_de_vaccins;
+                break;
+            }
+            parcours = parcours->suivant;
+        }
+    }
+    return nombre;
+} // fonctionne bien
+
+/*** THE fonction avec pile ***/
+
+void deduireVaccinAPile(T_ABR** abr, char* marque, int nb_vaccins)
+{
+    if (abr == NULL)
+    {
+        printf("arbre vide\n");
+        exit(EXIT_FAILURE);
+    }
+    else
+    {
+        int nombreRestant = nb_vaccins; // nb initial de vaccins à déduire (qui sera décrémenté par la suite)
+        int nbDansCeNoeud = 0; // va servir à chaque itération
+
+        // on se lance dans le parcours
+        // on crée une pile et on récupère le noeud courant
+        Pile* pileDeNoeuds = creerPile(compterNoeuds(*abr));
+        T_ABR* courant = *abr;
+
+        while (((courant != NULL) || !(pileVide(pileDeNoeuds))) && nombreRestant!=0) // ne s'arrête pas tant que les deux ne sont pas remplies
+        {
+            while ((courant != NULL))
+            {
+                int bienEmpile = empiler(pileDeNoeuds, courant);
+                if (bienEmpile != 1) printf("empilement n'a pas marche. pile pleine?\n");
+                courant = courant->fils_gauche;
+            }
+
+            /*** DEBUT traitement du noeud ***/
+
+            courant = depiler(pileDeNoeuds);
+            if (courant == NULL) printf("depilement n'a pas marche\n");
+
+            nbDansCeNoeud = compterVaccinsNoeud(courant, marque);
+
+            // on cherche à déduire le vaccin de sa liste s'il s'y trouve
+            deduireVaccinL(&(courant->listevaccins), marque, nombreRestant);
+
+            // on met à jour le nombre de vaccins qu'il reste à déduire (nombreRestant)
+            if (courant->listevaccins != NULL)
+            {
+                // s'il n'y a plus de vaccin dans ce noeud on doit aller regarder les autres et nombreRestant est décrémenté de nbDansCeNoeud
+                if (compterVaccinsNoeud(courant, marque) == 0)
+                    nombreRestant -= nbDansCeNoeud;
+                // sinon c'est qu'il y avait plus de vaccins dans le noeud que de vaccins à supprimer donc nombreRestant prend la valeur 0
+                else nombreRestant = 0; // condition d'arrêt remplie
+            }
+
+            // on regarde si le noeud doit être supprimé <=> si sa liste de vaccins est vide
+            if (courant->listevaccins == NULL)
+            {
+                // le cas pbmatique est celui ou le noeud sera remplace par son fils droit, on récupère donc la date du noeud courant pour pouvoir la comparer ensuite avec celle de son remplaçant :
+                char* dateDuNoeudRemplace = courant->date;
+
+                // on remplace dans l'arbre le noeud supprimé par son remplaçant
+                T_ABR* parent = search_geq_ajout(*abr, courant->date);
+                parent->fils_gauche = supprimerNoeud(courant, courant->date);
+                /* 4 possibilités :
+                    1- courant n'avait pas de fils gauche et a été remplacé par son fils droit PB CAR N'A PAS ENCORE ETE TRAITE
+                    2- courant n'avait pas de fils droit et a été remplacé par son fils gauche ok car a deja ete traite
+                    3- courant n'avais ni fils gauche ni fils droit et vaut maintenant NULL ok
+                    4- courant avait un fils gauche et un fils droit et a été remplacé par son prédécesseur (qui faisait partie de son sous-arbre gauche) ok car a deja ete traite
+                */
+                // on va explorer le prochain selon le résultat de cette suppression
+                courant = parent->fils_gauche;
+
+                // on gère le cas pbmatique :
+                /* si la date du noeud courant est plus grande que la date du noeud qui a ete remplacé,
+                 * ça veut dire que le noeud courant est le fils droit du noeud qui a été remplacé,
+                 * donc on ne touche pas à courant pour qu'il soit traité à la prochaine itération.
+                 * sinon, on va regarder son fils droit. */
+
+                if (courant != NULL && strcmp(courant->date, dateDuNoeudRemplace) <= 0) // cas 2 ou 4, non problématique
+                {
+                    courant = courant->fils_droit;
+                }
+                // sinon cas 1 ou 3 : courant est traité, c'est le fils droit du noeud qui a été remplacé, ou alors c'est NULL
+            }
+
+            else // le noeud n'a pas été supprimé, on va simplement explorer son fils droit
+            {
+                courant = courant->fils_droit;
+            }
+
+            /*** FIN traitement du noeud ***/
+        }
+    }
+} // free pile?
+// ne fonctionne pas : suppression d'un noeud...
+
+
+/*
+int compterNombreVaccinsAdeduire(T_ABR* abr, char* marque, int nb_vaccins)
+{
+    unsigned int nombreVaccinsInitial = 0;
+    // recherche du vaccin
+    T_ListeVaccins* vaccinConcerne = rechercherVaccinDansUneListe(abr->listevaccins, marque);
+    if (vaccinConcerne != NULL)
+    {
+       nombreVaccinsInitial = vaccinConcerne->nombre_de_vaccins;
+    }
+    deduireVaccinL(&(abr->listevaccins), marque, nb_vaccins);
+    return nombreVaccinsInitial - vaccinConcerne->nombre_de_vaccins;
+}*/
+
+
+
+// version récursive
+
+/*** Fonctions préliminaires ***/
+
+
+/*** THE fonction ***/
+
+/*
 void deduireVaccinA(T_ABR** abr, char* marque, int nb_vaccins)
-/* condition d'arrêt : nb_vaccins tombe à 0 (il est décrémenté à chaque appel)
- * ou on arrive sur un noeud nul*/
+// condition d'arrêt : nb_vaccins tombe à 0 (il est décrémenté à chaque appel) ou on arrive sur un noeud nul
 {
     if (*abr != NULL && nb_vaccins > 0)
     {
@@ -417,7 +541,11 @@ void deduireVaccinA(T_ABR** abr, char* marque, int nb_vaccins)
 
         /*** début traitement noeud ***/
 
-        printf("je regarde le noeud %s\n", (*abr)->date);
+//        Je regarde le nombre de vaccins avant toute modif
+//        int nombreEnCours = compterVaccins(*abr, marque);
+//        printf("\n\t\tIL Y A %d VACCINS %s DANS CE SOUS-ARBRE\n\n", nombreEnCours, marque);
+
+ /*       printf("je regarde le noeud %s\n", (*abr)->date);
         printf("\tla il y a %d vaccins a suppr\n", nb_vaccins);
 
         int nbDansCeNoeud = compterVaccinsNoeud(*abr, marque);
@@ -437,108 +565,43 @@ void deduireVaccinA(T_ABR** abr, char* marque, int nb_vaccins)
             *abr = supprimerNoeud(*abr, (*abr)->date);
             printf("\nMa nouvelle date est %s\n", (*abr)->date);
         }
-        else printf("je n'ai pas besoin d'etre supprime\n");
+        else printf("je n'ai pas besoin d'etre supprime\n"); */
 
         /*** fin traitement noeud ***/
 
-        printf("\n\t '''' J'ai ete traite, au tour de mon fils droit ''''\n\n");
+ /*       printf("\n\t '''' J'ai ete traite, au tour de mon fils droit ''''\n\n");
         deduireVaccinA(&((*abr)->fils_droit), marque, nb_vaccins);
     }
     else printf("%d vaccins restants\n", nb_vaccins);
 } // ne fonctionne pas : cmt passer le nb de vaccins modifié aux appels antérieurs?
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* Rechercher dans une liste
-T_ListeVaccins* rechercherVaccinDansUneListe(T_ListeVaccins* liste, char* marque)
-{
-    while (liste != NULL && strcmp(liste->marque, marque)!=0)
-        liste = liste->suivant;
-    return liste;
-}*/
-
-/*int compterNombreVaccinsAdeduire(T_ABR* abr, char* marque, int nb_vaccins)
-{
-    unsigned int nombreVaccinsInitial = 0;
-    // recherche du vaccin
-    T_ListeVaccins* vaccinConcerne = rechercherVaccinDansUneListe(abr->listevaccins, marque);
-    if (vaccinConcerne != NULL)
-    {
-       nombreVaccinsInitial = vaccinConcerne->nombre_de_vaccins;
-    }
-    deduireVaccinL(&(abr->listevaccins), marque, nb_vaccins);
-    return nombreVaccinsInitial - vaccinConcerne->nombre_de_vaccins;
-}*/
-
-
-/* version pile : itératif
-void deduireVaccinA(T_ABR** abr, char* marque, int nb_vaccins)
-/* Déduit le stock d'un vaccin dans un arbre par ordre croissant de date de réception. Si un noeud ne contient plus de vaccins alors, il est supprimé
- * Ordre croissant -> parcours infixe
-{
-    if (abr == NULL)
-    {
-        printf("Arbre vide\n");
-        exit(0);
-    }
-    // on récupère le nombre de vaccins initial, et le nombre de vaccins auquel on veut arriver une fois la déduction faite
-    unsigned int nombreEnCours = compterVaccins(*abr, marque);
-    unsigned int nouveauNombreEnCours = 0;
-    printf("\n***** pour l'instant il y a %d vaccins de la marque %s *****\n", nombreEnCours, marque);
-    unsigned int nombreADeduire = nb_vaccins;
-    unsigned int nombreDeduit = 0;
-    printf("***** on veut arriver a un total de %d vaccins pour que leCompteSoitBon *****\n\n\t*****\n\n", nombreEnCours - nombreADeduire);
-
-    // parcours infixe itératif jusqu'à ce que leCompteEstBon soit atteint
-    // on crée une pile de noeuds : au plus, elle contient le nombre de noeuds de l'arbre
-    Pile* pile = creerPile(compterNoeuds(*abr));
-    T_ABR* Ncourant = *abr;
-
-    while ((Ncourant != NULL) && (nombreADeduire > 0))
-    {
-        while (Ncourant != NULL)
-        {
-            empiler(pile, Ncourant);
-            Ncourant = Ncourant->fils_gauche;
-        }
-        Ncourant = depiler(pile);
-
-        // on traite le noeud : déduction vaccin et suppression si nécessaire
-        deduireVaccinL(&(Ncourant->listevaccins), marque, nombreADeduire);
-        if (Ncourant->listevaccins == NULL) // il faut supprimer le noeud
-        {
-            Ncourant = supprimer(abr, old->date);
-        }
-        else Ncourant = Ncourant->fils_droit;
-
-        nouveauNombreEnCours = compterVaccins(*abr, marque);
-        nombreDeduit = nombreEnCours - nouveauNombreEnCours;
-        nombreEnCours = nouveauNombreEnCours;
-        nombreADeduire = nombreADeduire - nombreDeduit;
-
-        printf("\n***** maintenant il y a %d vaccins de la marque %s *****\n\n", nombreEnCours, marque);
-        printf("\tnombre deduit : %d\n", nombreDeduit);
-        printf("\tnombreADeduire = %d\n\n", nombreADeduire);
-    }
-    // free pile?
-}
 */
 
+// version retour int
+/*
+int deduireVaccinArec(T_ABR** abr, char* marque, int nb_vaccins)
+// retourne le nombre de vaccins qu'il reste à déduire. Si = 0; dernier appel.
+{
+    if (*abr!= NULL || nb_vaccins <= 0) return 0; // plus de vaccins à déduire
+    else
+    {
+        // traitement de l'arbre :
+        // fils gauche
+        return deduireVaccinArec(&((*abr)->fils_gauche), marque, nb_vaccins);
+
+        // le noeud lui-même :
+        printf("je regarde le noeud %s\n", (*abr)->date);
+        printf("\tla il y a %d vaccins a suppr\n", nb_vaccins);
+
+        int nbDansCeNoeud = compterVaccinsNoeud(*abr, marque);
+        printf("AVANT deduction il y a %d vaccins dans ce noeud\n", nbDansCeNoeud);
+
+        deduireVaccinL(&((*abr)->listevaccins), marque, nb_vaccins);
+        printf("APRES deduction il y a %d vaccins dans ce noeud\n", compterVaccinsNoeud(*abr, marque));
+
+        return nb_vaccins - nbDansCeNoeud;
 
 
-
-
+    }
+}
+*/
 
