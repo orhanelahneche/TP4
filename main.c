@@ -77,10 +77,13 @@ int main() {
 
     printf("\n\t*** modif ***\n\n");
 
-    T_ABR* nouvelArbre =
-    //deduireVaccinAPile(&arbre, "moderna", 50);
-    afficherStockA(arbre);
+    //T_ABR* nouveauFilsDroit = supprimerNoeud(arbre->fils_droit, "2021-11-18");
+//
+//    deduireVaccinAPile(&arbre, "moderna", 60);
+//    afficherStockA(arbre);
 
+// test marqueEstDedans ok
+// test char* minimum(T_ABR* abr, char* marque)
 
 
     return 0;

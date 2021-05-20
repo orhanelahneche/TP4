@@ -87,10 +87,13 @@ T_ListeVaccins* rechercherVaccinDansUneListe(T_ListeVaccins* liste, char* marque
 int compterVaccinsNoeud(T_ABR* noeud, char* marque);
 T_ABR* predecesseurDunNoeudAvecFilsGauche(T_ABR* abr);
 T_ABR* supprimerVaccin(T_ABR* abr, char* date);
-int deduireVaccinArec(T_ABR** abr, char*marque, int nb_vaccins); // renvoie le nb de vaccins à déduire décrémenté à chaque appel
+bool marqueEstDedans(T_ABR *abr, char* marque);
+T_ABR* minimum (T_ABR* abr, char* marque);
+//int deduireVaccinArec(T_ABR** abr, char*marque, int nb_vaccins); // renvoie le nb de vaccins à déduire décrémenté à chaque appel
 void deduireVaccinA(T_ABR** abr, char*marque, int nb_vaccins); // utilise deduireVaccinArec
-void deduireVaccinAite(T_ABR** abr, char*marque, int nb_vaccins);
-void deduireVaccinAPile(T_ABR** abr, char* marque, int nb_vaccins);
+//void deduireVaccinAite(T_ABR** abr, char*marque, int nb_vaccins);
+//void deduireVaccinAPile(T_ABR** abr, char* marque, int nb_vaccins);
+//T_ABR* parentDunNoeud(T_ABR* abr, char*date);
 
 
 
