@@ -6,52 +6,7 @@ int main() {
 
     /* MENU */
 
-    /* TESTS */
-    /*
-    T_ListeVaccins** listeVaccins = malloc(5*sizeof(T_ListeVaccins*));
-    *listeVaccins = creerVaccin("violette", 10);
-    ajouterVaccinL(listeVaccins, "orhane", 40);
-    ajouterVaccinL(listeVaccins, "louis", 200);
-    afficherStockL(*listeVaccins);
-    printf("\n*** modif ***\n\n");*/
-
-    // question 6 : déduire vaccin L
-    // deduireVaccinL(listeVaccins,"chloe",20); YES
-    // deduireVaccinL(listeVaccins, "violette", 20); YES
-    // deduireVaccinL(listeVaccins, "violette", 5); YES
-    // deduireVaccinL(listeVaccins,"orhane",20); YES
-    // deduireVaccinL(listeVaccins, "orhane", 40); YES
-    // deduireVaccinL(listeVaccins, "louis", 230);
-    // afficherStockL(*listeVaccins);
-
-    /* fonction : compterNoeuds OK
-    T_ABR* a = malloc(sizeof(T_ABR));
-    T_ABR* b = malloc(sizeof(T_ABR));
-    T_ABR* c = malloc(sizeof(T_ABR));
-    T_ABR* d = malloc(sizeof(T_ABR));
-    T_ABR* e = malloc(sizeof(T_ABR));
-
-    e->fils_gauche = NULL;
-    e->fils_droit = NULL;
-
-    a->fils_gauche = NULL;
-    a->fils_droit = NULL;
-
-    c->fils_gauche = NULL;
-    c->fils_droit = NULL;
-
-    d->fils_droit = e;
-    d->fils_gauche = b;
-
-    b->fils_droit = c;
-    b->fils_gauche = a;
-
-    printf("%d noeuds\n", compterNoeuds(d));*/
-
-    // question 7 : déduireVaccinA
-
-    // racine : 35 vaccins moderna
-    T_ABR* arbre = creerABR("2021-05-19");
+     T_ABR* arbre = creerABR("2021-05-19");
     ajouterVaccinA(&arbre, "2021-05-19", "moderna", 10);
     ajouterVaccinA(&arbre, "2021-05-19", "moderna", 20);
     ajouterVaccinA(&arbre, "2021-05-19", "moderna", 5);
@@ -77,14 +32,99 @@ int main() {
 
     printf("\n\t*** modif ***\n\n");
 
-    //T_ABR* nouveauFilsDroit = supprimerNoeud(arbre->fils_droit, "2021-11-18");
-//
-//    deduireVaccinAPile(&arbre, "moderna", 60);
-//    afficherStockA(arbre);
+    deduireVaccinA(&arbre, "moderna", 50);
 
-// test marqueEstDedans ok
-// test char* minimum(T_ABR* abr, char* marque)
+    afficherStockA(arbre);
 
+
+
+
+
+    int choix=0;
+
+    T_ABR * a=NULL;
+    char * jour =malloc(sizeof(char)*2);
+    char * mois =malloc(sizeof(char)*2);
+    char * annee=malloc(sizeof(char)*4);
+    char * date=malloc(sizeof(char)*10);
+    char * marque=malloc(sizeof(char)*50);
+
+    int nb=0;
+
+    while (choix!=6)
+    {
+        printf("1 : Initialiser un ABR\n");
+        printf("2 : Ajouter un nombre de vaccins d%cune marque dans un ABR par une date indiqu%ce\n",39,130);
+        printf("3 : Afficher tous les stocks disponibles dans un ABR\n");
+        printf("4 : Compter le nombre de vaccins disponible pour une marque indiqu%ce\n",130);
+        printf("5 : D%cduire un nombre de vaccins d%cune marque indiqu%ce dans un ABR\n",130,39,130);
+        printf("6 : Quitter\n");
+        fflush(stdin);
+        scanf("%d", &choix);
+        switch (choix) {
+            case 1 :
+                printf("Avec quelle date voulez vous initialiser le vaccin ?\n");
+                printf("Donnez le jour :\n");
+                fflush(stdin);
+                scanf("%s", jour);
+                printf("Donnez le mois :\n");
+                fflush(stdin);
+                scanf("%s", mois);
+                printf("Donnez l'annee :\n");
+                fflush(stdin);
+                scanf("%s", annee);
+                date=annee;
+                strcat(date, "-");
+                strcat(date, mois);
+                strcat(date, "-");
+                strcat(date,jour);
+                a = creerABR(date);
+                break;
+            case 2 :
+                printf("Combien de vaccins voulez-vous ajouter ?\n");
+                fflush(stdin);
+                scanf("%d", &nb);
+                printf("De quel marque sont ces vaccins ?\n");
+                fflush(stdin);
+                scanf("%s", marque);
+                printf("A quelle date voulez-vous ajouter ces vaccins ?\n");
+                printf("donnez le jour :\n");
+                fflush(stdin);
+                scanf("%s", jour);
+                printf("Donnez le mois :\n");
+                fflush(stdin);
+                scanf("%s", mois);
+                printf("Donnez l'annee :\n");
+                fflush(stdin);
+                scanf("%s", annee);
+                date=annee;
+                strcat(date, "-");
+                strcat(date, mois);
+                strcat(date, "-");
+                strcat(date,jour);
+                ajouterVaccinA(&a, date, marque, nb);
+                break;
+            case 3:
+                afficherStockA(a);
+                break;
+            case 4:
+                printf("De quelle marque voulez vous la quantit%c de stock ?\n",130);
+                fflush(stdin);
+                scanf("%s", marque);
+                nb = compterVaccins(a,marque);
+                printf("Il y a %d vaccins dans l'ABR pour cette marque.\n", nb);
+                break;
+            case 5:
+                printf("De quelle marque voulez vous r%cduire le stock ?\n",130);
+                fflush(stdin);
+                scanf("%s", marque);
+                printf("Combien de vaccins voulez-vous supprimer ?\n",130);
+                fflush(stdin);
+                scanf("%s", &nb);
+                deduireVaccinA(&a, marque, nb);
+                break;
+        }
+    }
 
     return 0;
 }
