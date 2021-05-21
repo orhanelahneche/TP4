@@ -34,11 +34,7 @@ int main() {
 
     deduireVaccinA(&arbre, "moderna", 50);
 
-    afficherStockA(arbre);
-
-
-
-
+    afficherStockA(arbre); // fonctionne très bien !
 
     int choix=0;
 
@@ -120,7 +116,7 @@ int main() {
                 scanf("%s", marque);
                 printf("Combien de vaccins voulez-vous supprimer ?\n",130);
                 fflush(stdin);
-                scanf("%s", &nb);
+                scanf("%d", &nb);
                 deduireVaccinA(&a, marque, nb);
                 break;
         }

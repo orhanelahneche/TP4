@@ -363,7 +363,7 @@ void deduireVaccinA(T_ABR** abr, char*marque, int nb_vaccins)
     T_ABR* noeudMinimal = malloc(sizeof(T_ABR));
 
     // rechercher le noeud minimal
-    while (nombreRestant > 0)
+    while (*abr != NULL && nombreRestant > 0)
     {
         if (noeud_minimal_marque(*abr, &noeudMinimal, marque) == 1) // la fonction a trouvé un noeud minimal qui contenait le vaccin
             // on récupère le nombre de vaccins du noeud
@@ -381,6 +381,7 @@ void deduireVaccinA(T_ABR** abr, char*marque, int nb_vaccins)
         else
         {
             printf("plus de noeud contenant cette marque\n");
+            // return 0;
         }
     }
 }
